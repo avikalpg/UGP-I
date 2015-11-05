@@ -51,13 +51,18 @@ if clientID!=-1:
     # for handle in objs:
     #     JointPosition=vrep.simxGetJointPosition(clientID, handle, vrep.simx_opmode_oneshot_wait)
     #     print(JointPosition)
+
+    startVar=vrep.simxStartSimulation(clientID, vrep.simx_opmode_oneshot_wait)
+
     for pose in range(0,10):
         # setting random pose
         for joint_handle in joint_objs:
             pos = random.randint(1, 360)
-            vrep.simxSetJointPosition(clientID, joint_handle, math.radians(pos), vrep.simx_opmode_oneshot_wait)
+            vrep.simxSetJointTargetPosition(clientID, joint_handle, math.radians(pos), vrep.simx_opmode_oneshot_wait)
+
         # capturing image of this pose
-        startVar=vrep.simxStartSimulation(clientID, vrep.simx_opmode_oneshot_wait)
+        time.sleep(1.0)
+        # startVar=vrep.simxStartSimulation(clientID, vrep.simx_opmode_oneshot_wait)
         for index in range(0, len(vs_objs)):
             vs_handle=vs_objs[index]
             objName=vs_names[index]
@@ -82,13 +87,13 @@ if clientID!=-1:
                 img.save('images/'+objName+'/image'+str(pose)+'.png')
             else:
                 print ('received data was not OK')
-        pauseVar=vrep.simxStopSimulation(clientID, vrep.simx_opmode_oneshot_wait)
-        time.sleep(0.1)
+        #pauseVar=vrep.simxStopSimulation(clientID, vrep.simx_opmode_oneshot_wait)
+        #time.sleep(0.1)
 
     # Now close the connection to V-REP:
 
-    # stopVar=vrep.simxStopSimulation(clientID, vrep.simx_opmode_oneshot_wait)
-    # print('Stop Simulation', stopVar)
+    stopVar=vrep.simxStopSimulation(clientID, vrep.simx_opmode_oneshot_wait)
+    print('Stop Simulation', stopVar)
     vrep.simxFinish(clientID)
 else:
     print ('Failed connecting to remote API server')
