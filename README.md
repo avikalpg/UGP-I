@@ -12,3 +12,9 @@ Another edge of it is to plan a path between two given points which is shortest 
  particular configuration of the robot.”*
  
 This project is being carried out as an Under-graduate project under Prof. Amitabha Mukherjee (Computer Science and Engineering Dept., IIT Kanpur). 
+
+//////////////
+
+Johnson Lindenstaus Lemma --> proof of correctness of random projections 
+
+Shi- Tomasi --> good-features to track

@@ -26,11 +26,22 @@ from PIL import Image
 import os
 import math
 import random
+import pickle
 import numpy as np
+
+############################
+##### Parameter Values #####
+############################
+
+num_poses = 30000
+vrep_port = 19997    # default for vrep software environment
+
+#############################
+#############################
 
 print ('Program started')
 vrep.simxFinish(-1) # just in case, close all opened connections
-clientID=vrep.simxStart('127.0.0.1',19997,True,True,5000,5) # Connect to V-REP
+clientID=vrep.simxStart('127.0.0.1',vrep_port,True,True,5000,5) # Connect to V-REP
 if clientID!=-1:
     print ('Connected to remote API server')
 
@@ -53,12 +64,25 @@ if clientID!=-1:
     #     print(JointPosition)
 
     startVar=vrep.simxStartSimulation(clientID, vrep.simx_opmode_oneshot_wait)
-
-    for pose in range(0,10):
+    
+    joint_angles = []
+    joint_positions = []
+    for pose in range(0,num_poses):
         # setting random pose
+        pose_angles = []
         for joint_handle in joint_objs:
-            pos = random.randint(1, 360)
+            pos = random.randint(-179, 180)
+            pose_angles.append(pos)
             vrep.simxSetJointTargetPosition(clientID, joint_handle, math.radians(pos), vrep.simx_opmode_oneshot_wait)
+
+        # storing the joint angles for future reference
+        joint_angles.append(pose_angles)
+
+        pose_position = []
+        for handle in joint_objs:
+            JointPosition=vrep.simxGetJointPosition(clientID, handle, vrep.simx_opmode_oneshot_wait)
+            pose_position.append(JointPosition)
+        joint_positions.append(pose_position)
 
         # capturing image of this pose
         time.sleep(1.0)
@@ -87,6 +111,12 @@ if clientID!=-1:
                 img.save('images/'+objName+'/image'+str(pose)+'.png')
             else:
                 print ('received data was not OK')
+
+        # storing the joint angles in a file
+        with open('images/joint_angles.txt', 'wb') as f:
+            pickle.dump(joint_angles, f)
+        with open('images/joint_positions.txt', 'wb') as f:
+            pickle.dump(joint_positions, f)
         #pauseVar=vrep.simxStopSimulation(clientID, vrep.simx_opmode_oneshot_wait)
         #time.sleep(0.1)
 
