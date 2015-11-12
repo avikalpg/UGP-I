@@ -1,3 +1,18 @@
+Step 1:
+	get a visualization of the image-space manifold and the angular C-space manifold (latter should be similar to a ring)
+Step 2:
+	A diagram illustrating the nearest neighbours, and the challenges:
+	i.	the opposite faces of the middle link get inter-changed --> \theta_1 change by 180, and \theta_2 and \theta_3 change signs
+	ii.	a jump when link 1 and link 3 are in the same spatial region --> sir said the this problem can be solved by coloring the front and back of the link 3 differently
+Step 3: 
+	Find 50 nearest neighbours for \theta-space and get a FLAG which tests whether all the 10-nn of the image in image-space lie in the nearest 50 of \theta-space.
+	For a distance metric -> (1-x)*(Image_distance) + x*(\theta distance), for constructing the graph, find minimum value of x such that the above FLAG is satisfied.
+Step 4:
+	For the tip of the robot (end point of link 3), note its C-space and visualize it using ISOMAP
+
+
+NOTE: While creating the \theta space, take care that for \theta_1, -170 and 170 only have a difference of 20, not 340. And it is not the same for other 2 angles.
+
 K-PCA
 ISOMAP
 Deep learning
