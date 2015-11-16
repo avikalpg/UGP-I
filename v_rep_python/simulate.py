@@ -31,9 +31,11 @@ import pickle
 import numpy as np
 
 delayTime = 1.0 
+source_node = 1
+target_node = 21998
 
 positions_location = "/home/avikalpg/Documents/acads/UGP-I/v_rep_python/images/joint_positions.txt"
-images_location = '/home/avikalpg/Desktop/tmp/images_theta_10_10000.txt'
+images_location = '/home/avikalpg/Desktop/tmp/images_theta_'+str(source_node)+'_'+str(target_node)+'.txt'
 # positions_location = sys.argv[1]
 # images_location = sys.argv[2]
 
@@ -46,7 +48,7 @@ angles = np.array(angles)
 angles = np.split(angles, 2, 2)
 angles = np.array(angles[1])
 angles = angles.squeeze()
-#print angles
+# print angles*180/np.pi
 
 #########################################
 ############ Temporary code #############
