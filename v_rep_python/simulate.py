@@ -25,16 +25,33 @@ import time
 from PIL import Image
 import os
 import sys
-import math
+# import math
 import random
 import pickle
 import numpy as np
 
-with open(sys.argv[1], 'rb') as f:
+delayTime = 1.0 
+
+positions_location = "/home/avikalpg/Documents/acads/UGP-I/v_rep_python/images/joint_positions.txt"
+images_location = '/home/avikalpg/Desktop/tmp/images_theta_10_10000.txt'
+# positions_location = sys.argv[1]
+# images_location = sys.argv[2]
+
+with open(positions_location, 'rb') as f:
     angles = pickle.load(f)
-with open(sys.argv[2], 'rb') as f:
+with open(images_location, 'rb') as f:
     images = pickle.load(f)
+
+angles = np.array(angles)
+angles = np.split(angles, 2, 2)
+angles = np.array(angles[1])
+angles = angles.squeeze()
 #print angles
+
+#########################################
+############ Temporary code #############
+# images = ['image10000.png', 'image10001.png', 'image10010.png', 'image10110.png', 'image10120.png']
+#########################################
 
 joints = []
 for image in images:
@@ -65,11 +82,11 @@ if clientID!=-1:
         count = 0
         for joint_handle in joint_objs:
             pos = pose[count]
-            vrep.simxSetJointTargetPosition(clientID, joint_handle, math.radians(pos), vrep.simx_opmode_oneshot_wait)
-            count = count + 1
+            vrep.simxSetJointTargetPosition(clientID, joint_handle, pos, vrep.simx_opmode_oneshot_wait)
+            count = count + 1#(count + 2)%3
 
         # capturing image of this pose
-        time.sleep(1.0)
+        time.sleep(delayTime)
         #time.sleep(0.1)
 
     # Now close the connection to V-REP:

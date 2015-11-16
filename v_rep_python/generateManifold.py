@@ -1,7 +1,7 @@
 #######################################################################
 #################### ABOUT THE FILE - FUNCTION ########################
 #######################################################################
-# This file currently gets 100 poses from all the visual sensors in the 
+# This file currently gets 20000 poses from all the visual sensors in the 
 # active scene, at intervals of 1 sec.
 # It saves the images in directories inside images folder, named after
 # the handle number of the visual sensor they belong to
