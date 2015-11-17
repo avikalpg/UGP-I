@@ -1,4 +1,4 @@
-\documentclass[12pt]{article}
+\documentclass[12pt, two column]{article}
 
 \usepackage{fullpage}
 %\usepackage[margin=0.5in]{geometry}
@@ -12,7 +12,7 @@
 \usepackage{amssymb}
 \usepackage{graphicx}
 
-\title{Visual Motion Planning for 3-D Robots}
+\title{Exploring the Motion Manifold for an Articulated Arm}
 \author{ Avikalp Kumar Gupta \& Amitabha Mukerjee}
 % \institute{Computer Science and Engineering, IIT Kanpur}
 
@@ -20,28 +20,51 @@
 \maketitle
  
 \textbf{\large{Abstract}}\vspace{0.4em}\\
-The aim of this project is to plan paths of multiple robots. This project is an extension of the work done by Debojyoti Dey in his M. Tech. Thesis [\cite{deb}] to 3 dimensions.\\
-Debojyoti developed a roadmap composition technique in multi-robot environment. The algorithm is implemented on a visual configuration space. Key traits of the algorithm:
-\begin{itemize}
-  \setlength\itemsep{0em}
-  \item \textit{decoupled} motion planning (time efficiency)
-  \item oblivious to configuration parameters (\textit{generic} method)
-  \item probabilistically resolution complete
-  \item Space optimality: \textit{neighbourhood product lattice} used so that Cartesian products of individual roadmaps are dynamically generated.
-\end{itemize}
-Debojyoti's algorithm was able to plan paths for 2-D robots. This project uses \textit{v-rep} for simulation in 3 dimensions.\\
-For a particular simulation environment with $n$ cameras (vision sensors), each individual pose of the robot will be expressed as a set of $n$ images, instead of just one. This project is hence a real-world implementation of the algorithm.\\
-Since, for fixed cameras, occlusion can give rise to incompleteness, hence various ways of using body-fixed cameras were being thought about as the next step in the project.
+This project is a step towards the extension of visual motion planning algorithms (specifically Debojyoti Dey's M.Tech. thesis work [\cite{deb}]) to 3 dimensions. In this project, we try to generate the \textit{motion manifold} of an articulated arm using only \textit{visual input}. The articulated arm considered in this project has 3 revolute joints, and hence has 3 degrees of freedom.
+
+We use a simulation environment with 3 cameras (vision sensors). Hence, each individual configuration of the robot is expressed as a set of 3 images. We call this set of images, or the configuration it represents, as a \textit{pose} of the robot. A graph is generated over these poses by connecting \textit{k-nearest neighbours} for each pose. The distance between two poses is measured as the Euclidean distance between the pixel values. This graph is supposed to represent the motion manifold of the robot. 
+
+When the graph is constructed over the joint angles, it results in a motion
+manifold (a thick hollow cylinder, $\mathbb{R}^2 \times S^1$) as expected.  The visual manifold is
+corrupted owing to similarity between distant poses, and results in
+\textit{short-circuits}.  The phenomena are discussed and possible approaches to
+overcoming it are proposed. 
 
 \section{Introduction}
-\textit{``Traditionally, the problem has been handled using a configuration space defined in terms of \textbf{motion parameters} of the robots. An example of such motion parameters are joint angles of an articulated arm. In this work we propose a novel approach based on \textbf{visual input} alone. Such a model works on a random sample set of images of the robots without knowing the motion parameters concerned."}[\cite{deb}]\\
-Even though the vision based model makes the algorithm more generic with respect to robots, it raises issues regarding the information captured. Debojyoti implemented the model for 2-D robots. In 2 dimensions, all the instantaneous information about all the objects in the environment can be captured by a single photograph. The same is not true in 3 dimensions. 
 
-\subsection{Problem: Data Generation}
+Our ultimate aim is to plan paths of multiple robots.
+Debojyoti had developed a roadmap composition technique in multi-robot environment. Key traits of the algorithm:
+\begin{itemize}
+  \setlength\itemsep{0em}
+  \item \textit{decoupled} motion planning (much more efficient than \textit{centralized} motion planning in terms of time)
+  \item oblivious to configuration parameters (The algorithm is implemented on a visual configuration space, and hence is a \textit{generic} method)
+  \item probabilistically resolution \textit{complete}
+  \item Space optimality: \textit{neighbourhood product lattice} used so that Cartesian products of individual roadmaps are dynamically generated.
+\end{itemize}
+This algorithm was able to plan paths for 2-D robots.
+
+\textit{``Traditionally, the problem has been handled using a configuration space defined in terms of \textbf{motion parameters} of the robots. An example of such motion parameters are joint angles of an articulated arm. In this work we propose a novel approach based on \textbf{visual input} alone. Such a model works on a random sample set of images of the robots without knowing the motion parameters concerned."}[\cite{deb}]\\
+Even though the vision based model makes the algorithm more generic with respect to robots, it raises issues regarding the information captured. Debojyoti implemented the model for 2-D robots. In 2 dimensions, all the instantaneous information about all the objects in the environment can be captured by a single photograph. This includes the complete configuration of the robot. The same is not true in 3 dimensions.
+
+The need of images of the environment from multiple views is obvious. Although, the number of cameras that will be sufficient to capture the \textit{complete} information about the environment depends on the environment itself because \textit{occlusion}, which depends on the geometries of the robots and the objects, can give rise to incompleteness. Algorithms, which can generate the a 3D image using a scan through the environment \cite{bica}, can be used to solve this problem in the future.
+
+\subsection{3-D Articulated Arm}
+
+Since we wanted our method to operate on only visual input, hence we moved forward to work on an algorithm, which might not always be able to find a path, if there exists one, but will only output \textit{correct and collision-free} paths. We started with a 3-D articulated arm with 3 revolute joints (3R) as shown in the figure \ref{3dof}. We installed 3 cameras at orthogonal positions in the environment, which will capture the visual input for our algorithm.
+
+\begin{figure}[h]
+  \includegraphics[width=\columnwidth]{graphics/3dof}
+  \caption{Robotic arm with 3 revolute joints - Created in v-rep. The 3 smaller windows show the image captured by the vision sensors installed in the scene \textit{\small{(image has been generated using v-rep software)}}}
+  \label{3dof}
+\end{figure}
+
+This project uses \textit{v-rep} for object modelling and simulation in 3 dimensions. The arm has been created in the \textit{v-rep} environment, and all data, including joint angles' information used for validation, is extracted using the \textit{remote API} functions provided by v-rep. The code for this project is written in \textit{Python} using multiple libraries, including some created by M.S.Ramiah, IIT Kanpur. Stanford's MATLAB code for ISOMAP was used for visualizing the lower dimensional manifold of the images.
+
+\section{Data Generation}
 One of the problems, to begin with, is the data generation. In debojyoti's work, the images, which were used to generate the roadmaps for each robot, were generated in the following manner:
 \begin{figure}
-  \includegraphics[width=0.5\columnwidth]{graphics/exp1_deb}
-  \includegraphics[width=0.5\columnwidth]{graphics/exp2_deb}
+  \includegraphics[width=0.45\linewidth]{graphics/exp1_deb}
+  \includegraphics[width=0.45\linewidth]{graphics/exp2_deb}
   \caption{Examples of arenas for Debojyoti's code: Black implies free area and white means obstacle. \textit{Image Source: Grayscaled (to highlight the arena) versions of images from [\cite{deb}]}}
   \label{twoD_arenas}
 \end{figure}
@@ -55,7 +78,7 @@ One of the problems, to begin with, is the data generation. In debojyoti's work,
 And for the articulated arm:\\ \textbf{[Ask and write here]}
 
 
-\subsection{Problem: Image Validation}
+\subsection{Image Validation}
 We have to capture images of the environment using cameras and use the information from \textit{all the images} to extract information. While generating the set of valid poses, for example, if we want to check collision, we have to go through all the images: the pose is valid if there is \textit{atleast} one image in which the objects are not colliding.
 
 But it turns out that we can never have enough (fixed) cameras. Consider the figure \ref{difficulties}. The environment, in this case, consists of 5 cameras, strategically placed at orthogonal positions to capture maximum information about the scene. The environment does not have any collision, but still all the cameras together are unable to classify this pose as valid.\\
@@ -87,7 +110,7 @@ Apart from the genericness, the paper also describes the closeness of the vision
     \item A single set of images for the static obstacles will be captured.
     \item Each robot will be simulated in an independent environment. Random \textit{target angles} for all joints will be given during the simulation, and images will be captured when the robot becomes stable. Simulation will be done to avoid impossible poses (figure \ref{impossible_image}). \\ \textbf{Drawback}: Reduction in the uniformity of the randomness as the boundary configurations become more probable than the other configurations (figure \ref{matPlotLib_image}).
     \begin{figure}
-    \includegraphics[width=0.3\linewidth]{graphics/theta_2_theta_0}
+    \includegraphics[width=\linewidth]{graphics/theta_2_theta_0}
     \caption{Plot showing accumulation of data points on the boundaries (\textit{Details: Radial distance = $2\pi + \theta_2$, and angle = $\theta_0$})}
     \label{matPlotLib_image}
     \end{figure}
@@ -104,57 +127,6 @@ Apart from the genericness, the paper also describes the closeness of the vision
     \item For each robot, get the shortest paths over the manifolds, from their initial to final poses.
     \item Detect any collision .... \textbf{[see how Debojyoti handles these]}
   \end{enumerate}
-
-%% \section{Theory}
-  %% \subsection{Visual Manifold Theorem}
-  %% In the absence of motion constraints, the pose of a mechanism with d degrees of freedom can be
-  %% described by a $d$-dimensional configuration vector $q$ . The space $Q$ of all possible configurations
-  %% is called the Configuration Space or C-space of the robot. However, how to determine $q$ is not
-  %% fixed; any \textit{generalized coordinate} that fully specifies the robot pose can be used. Let $R(q)$ be
-  %% the volume occupied by the robot in configuration $q$. $R(q)$ is a subset of $R_{sv}$ that is the volume
-  %% swept by the robot in all possible configurations. For a mobile robot, the degrees of freedom
-  %% $d = 3$, and traditionally, the configuration $q = (x, y, \theta)$ is used. We note that the topology of the
-  %% C-space is $\mathbb{R}^2 \times S^1$ , which is not euclidean, since as $\theta$ increases, it returns to the original pose.
-  %% This causes some difficulty in the algorithm, since most NLDR manifold discovery algorithms
-  %% (e.g. ISOMAP \cite{}) assume that the target manifold is euclidean. Now consider a camera
-  %% mounted on a robot that is moving in a static world. The image obtained from the camera is a
-  %% function of its pose q ∈ Q. The imaging transform function F () which maps a 3-D world point
-  %% to its image point I R = x , I R ∈ V, where V is the image space. F () is parametrized by the
-  %% camera imaging constants and the pose q . Under the traditional imaging situations (ignoring
-  %% lens distortions etc) F (q ) is a perspective transformation, which may be mapped as a linear
-  %% transformation in the homogeneous coordinates space.
-
-  %% Assumption (Visual distinguishability assumption).For any q 1 = q 2 , it is not the case that
-  %% I(q 1 ) is identical to I(q 2 ).
-  %% Theorem (Visual Manifold Theorem). Under visual distinguishability conditions, the parame-
-  %% ter space Q and the robot image space I R ⊂ V are homeomorphic.
-  %% Since F (q ) is linear transformation, every neighbourhood of q maps to a neighbourhood
-  %% on I R , that is N (q ) → N (I R ). For the other way to hold that is N (I R ) → N (q ), under the
-  %% assumption of “visual distinguishability”, different images must be from differing poses, so the
-  %% continuous image neighbourhood must be unique as well, hence the inverse also holds. Since any
-  %% neighbourhood has a bijective map in the other space, the parameter space Q is homeomorphic
-  %% to the visual space $I_R$.
-
-  %% A consequence of this theorem is that for a mobile robot camera, since the motion manifold
-  %% is R 2 × S 1 , the image manifold must also have the same topology.
-  %% In creating our visualizations below, we use these expectations to guide the data-driven
-  %% dimensionality reduction methods, since most NLDR methods require a target dimension to be
-  %% specified. Also, most NLDR methods generate euclidean topologies, and since an S 1 subspace
-  %% can only be mapped onto an euclidean R 2 space, this necessitates a step up in the target
-  %% dimension.
-  %% However, we note that in practice, we do not need to obtain the low dimensional embedding
-  %% as a set of manifold coordinates. Thus, in order to localize relative to other nearby objects, or
-  %% even to navigate, we do not need a set of coordinates; it is sufficient if we construct only the
-  %% local tangent spaces - these are done using principal component analysis on the local neighbours
-  %% in the images space - they correspond to charts on the manifold, and the set of all charts or the
-  %% atlas, is a complete representation of the manifold [4].
-  %% We can gain some intuition into the image manifold by noting that although images have a
-  %% dimensionality determined by the number of pixels, (320 × 240, say) so that each I(q ) ∈ R 80K .
-  %% However, assigning arbitrary colours to each of the ≈ 80K pixels will almost never generate
-  %% an image as seen from the mobile robot camera, hence the actual image space I R is a much
-  %% smaller subspace of V. In fact, what the theorem states is that the images will ideally lie on
-  %% a 3-dimensional manifold which is the I R subspace of V, and that it will have the topology
-  %% $\mathbb{R}^2 \times S^1$.
 
 \section{Current Progress}
   We have used \textit{v-rep software and API} to generate images [see \ref{v-rep}].
@@ -181,11 +153,6 @@ After going through some 3-D simulation softwares, we chose \textit{v-rep} over 
 \subsection{Image generation for a robot with 3 dofs (3 revolute joints)}
 \label{3_DOF_robot}
 
-\begin{figure}[h]
-  \includegraphics[width=\columnwidth]{graphics/3dof}
-  \caption{Robotic arm with 3 revolute joints - Created in v-rep. The 2 smaller windows show the image captured by the 2 vision sensors installed in the scene \textit{\small{(image has been generated using v-rep software)}}}
-  \label{3dof}
-\end{figure}
 The robot in figure \ref{3dof} was made using primitive shapes in v-rep.
 It has 3 revolute joints:
 One at the base, which makes whole system rotate about $z$-axis. And the other 2 have axes parallel to the $x-y$ plane.
@@ -194,12 +161,12 @@ This was created because if you consider the system installed on top of the rota
 \subsubsection{Manifold}
   As we know, the C-space of the system on top of the base cylinder would be a toroid ($T^2$), if there were no restrictions on the angles which were achievable by the joints. But since both of the top 2 revolute joints cannot rotate $360^\circ$, hence the configuration space is homeomorphic to $\mathbb{R}^2$ space, i.e. a rectangle.
 
-  The base revolute joint can rotate $360^\circ$, and hence is an $S^1$ joint. Hence we expect the C-space of the complete robot to be a ring-like structure (see figure \ref{fig:hollow_cylinder}).
+  The base revolute joint can rotate $360^\circ$, and hence is an $S^1$ joint. Hence we expect the C-space of the complete robot to be a ring-like structure (see figure \ref{hollow_cyclinder}).
 
-  \begin{figure}[here]
+  \begin{figure}
   \includegraphics[width=\linewidth]{graphics/hollow_cylinder}
+  \label{hollow_cylinder}
   \caption{3-D plot of $\theta_0, \theta_1$ and $\theta_2$ is a hollow cylinder (\textit{Details: $2\pi+\theta_0$ = distance from z-axis, $2\pi+\theta_1$ = distance from x-y plane \& $\theta_2$ = angular displacement along z-axis})}
-  \label{fig:hollow_cylinder}
   \end{figure}
 
   Unfortunately, this is not what we get in our first attempt. Figure \ref{manifold_visualization} illustrates the manifold of movement obtained on the graph generated on the images. You can observe this as the expected graph with short-circuits.
@@ -215,15 +182,6 @@ This was created because if you consider the system installed on top of the rota
   The solution of the first problem is to distinguish the different ends of the $3^{rd}$ link using different colors (figure \ref{new_3dof_image}).\\
   The 2nd problem was a fore-seen problem, and it was expected that if we use different colors for the 2 different sides of the middle link, we will be able increase the distance between them. But it turns out that this distance did not increase by much.
 
-\subsection{Image generation for Baxter}
-\label{ImgGenBaxter}
-Baxter robot is one of the in-built models in v-rep.
-It is a 2-armed robot with an animate face [\cite{wiki_Baxter}].
-It has 3 vision sensors installed on itself, one on the head and one on each arm. Apart from this, it also has many proximity sensors on itself, which are currently irrelevant to us.
-Both of baxter's arms have 7 degrees of freedom (and hence are redundant).
-
-Apart from the robot, there are 3 other vision sensors (cameras) in the environment, one on each global axis. The images were generated for all the six cameras, but in the absence of an environment and obstacles, the images from the cameras installed on Baxter were mostly blank. The first few images from the other vision sensors are shown in figure \ref{Baxter}. You can see that they belong to the same configuration of the robot.
-
 \begin{figure}
   \includegraphics[width=\columnwidth]{graphics/Baxter}
   \caption{An external python script (which uses v-rep remote API) captures images from various peripheral cameras. Images with the same name belong to the same pose.}
@@ -238,18 +196,18 @@ mobile system.
 Another method could be using body-fixed cameras for capturing information about the environment (example: the case of Baxter) and making the robot learn to find the shortest path. Some study about the various neural network learning algorithms (deep learning and RNNs (including LSTMs)) was also done during the course of this project to proceed in this direction.
 
 
-%\section{References}
-% \bibliographystyle{unsrt}
-%\bibliographystyle{alpha} 
-\bibliographystyle{apalike} % AWESOME
-
- \bibliography{report_ref}
-
 \section{Acknowledgement}
 I would like to specially thank Mamidela Seetha Ramaiah, a.k.a. MS Ram who had shared with me some very useful libraries he had developed for processing images and generating graphs over them. He also helped me in understanding concepts related to robotics and manifolds (using Choset's book \cite{choset}).
 
 I would also like to thank Debojyoti Dey for spending some very precious time in explaining his implementation.
 
 Lastly, I would like to thank Prof. Amitabha Mukerjee, who is the superviser of the project, for his guidance and expert advice through the project.
+
+%\section{References}
+% \bibliographystyle{unsrt}
+%\bibliographystyle{alpha} 
+\bibliographystyle{apalike} % AWESOME
+
+ \bibliography{report_ref}
 
 \end{document}

@@ -29,19 +29,28 @@
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces (left-top)A small sphere near a truncated cube; (others) all 5 cameras (placed at orthogonal positions) detect ``false" collision \textit  {\relax \fontsize  {10.95}{13.6}\selectfont  \abovedisplayskip 11\p@ plus3\p@ minus6\p@ \abovedisplayshortskip \z@ plus3\p@ \belowdisplayshortskip 6.5\p@ plus3.5\p@ minus3\p@ \def \leftmargin \leftmargini \parsep 5\p@ plus2.5\p@ minus\p@ \topsep 10\p@ plus4\p@ minus6\p@ \itemsep 5\p@ plus2.5\p@ minus\p@ {\leftmargin \leftmargini \topsep 9\p@ plus3\p@ minus5\p@ \parsep 4.5\p@ plus2\p@ minus\p@ \itemsep \parsep }\belowdisplayskip \abovedisplayskip {(image has been generated using v-rep software)}}}}{3}{figure.2}}
 \newlabel{difficulties}{{2}{3}{(left-top)A small sphere near a truncated cube; (others) all 5 cameras (placed at orthogonal positions) detect ``false" collision \textit {\small {(image has been generated using v-rep software)}}}{figure.2}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {2}Idea/Approach}{4}{section.2}}
-\@writefile{toc}{\contentsline {section}{\numberline {3}Current Progress}{4}{section.3}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Choice of a 3-D modelling software}{4}{subsection.3.1}}
-\newlabel{v-rep}{{3.1}{4}{Choice of a 3-D modelling software}{subsection.3.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Graph Generation}{4}{subsection.2.1}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Plot showing accumulation of data points on the boundaries (\textit  {Details: Radial distance = $2\pi + \theta _2$, and angle = $\theta _0$})}}{5}{figure.3}}
+\newlabel{matPlotLib_image}{{3}{5}{Plot showing accumulation of data points on the boundaries (\textit {Details: Radial distance = $2\pi + \theta _2$, and angle = $\theta _0$})}{figure.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Roadmap Composition}{5}{subsection.2.2}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Current Progress}{5}{section.3}}
 \citation{deb}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Image generation for a robot with 3 dofs (3 revolute joints)}{5}{subsection.3.2}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Robotic arm with 3 revolute joints - Created in v-rep. The 2 smaller windows show the image captured by the 2 vision sensors installed in the scene \textit  {\relax \fontsize  {10.95}{13.6}\selectfont  \abovedisplayskip 11\p@ plus3\p@ minus6\p@ \abovedisplayshortskip \z@ plus3\p@ \belowdisplayshortskip 6.5\p@ plus3.5\p@ minus3\p@ \def \leftmargin \leftmargini \parsep 5\p@ plus2.5\p@ minus\p@ \topsep 10\p@ plus4\p@ minus6\p@ \itemsep 5\p@ plus2.5\p@ minus\p@ {\leftmargin \leftmargini \topsep 9\p@ plus3\p@ minus5\p@ \parsep 4.5\p@ plus2\p@ minus\p@ \itemsep \parsep }\belowdisplayskip \abovedisplayskip {(image has been generated using v-rep software)}}}}{5}{figure.3}}
-\newlabel{3dof}{{3}{5}{Robotic arm with 3 revolute joints - Created in v-rep. The 2 smaller windows show the image captured by the 2 vision sensors installed in the scene \textit {\small {(image has been generated using v-rep software)}}}{figure.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Choice of a 3-D modelling software}{6}{subsection.3.1}}
+\newlabel{v-rep}{{3.1}{6}{Choice of a 3-D modelling software}{subsection.3.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Image generation for a robot with 3 dofs (3 revolute joints)}{6}{subsection.3.2}}
+\newlabel{3_DOF_robot}{{3.2}{6}{Image generation for a robot with 3 dofs (3 revolute joints)}{subsection.3.2}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.1}Manifold}{6}{subsubsection.3.2.1}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.2}Difficulties}{6}{subsubsection.3.2.2}}
 \citation{wiki_Baxter}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Robotic arm with 3 revolute joints - Created in v-rep. The 2 smaller windows show the image captured by the 2 vision sensors installed in the scene \textit  {\relax \fontsize  {10.95}{13.6}\selectfont  \abovedisplayskip 11\p@ plus3\p@ minus6\p@ \abovedisplayshortskip \z@ plus3\p@ \belowdisplayshortskip 6.5\p@ plus3.5\p@ minus3\p@ \def \leftmargin \leftmargini \parsep 5\p@ plus2.5\p@ minus\p@ \topsep 10\p@ plus4\p@ minus6\p@ \itemsep 5\p@ plus2.5\p@ minus\p@ {\leftmargin \leftmargini \topsep 9\p@ plus3\p@ minus5\p@ \parsep 4.5\p@ plus2\p@ minus\p@ \itemsep \parsep }\belowdisplayskip \abovedisplayskip {(image has been generated using v-rep software)}}}}{7}{figure.4}}
+\newlabel{3dof}{{4}{7}{Robotic arm with 3 revolute joints - Created in v-rep. The 2 smaller windows show the image captured by the 2 vision sensors installed in the scene \textit {\small {(image has been generated using v-rep software)}}}{figure.4}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.3}Proposed solutions}{7}{subsubsection.3.2.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Image generation for Baxter}{7}{subsection.3.3}}
+\newlabel{ImgGenBaxter}{{3.3}{7}{Image generation for Baxter}{subsection.3.3}{}}
 \citation{bica}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces An external python script (which uses v-rep remote API) captures images from various peripheral cameras. Images with the same name belong to the same pose.}}{6}{figure.4}}
-\newlabel{Baxter}{{4}{6}{An external python script (which uses v-rep remote API) captures images from various peripheral cameras. Images with the same name belong to the same pose}{figure.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Image generation for Baxter}{6}{subsection.3.3}}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Future Work}{6}{section.4}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces 3-D plot of $\theta _0, \theta _1$ and $\theta _2$ is a hollow cylinder (\textit  {Details: $2\pi +\theta _0$ = distance from z-axis, $2\pi +\theta _1$ = distance from x-y plane \& $\theta _2$ = angular displacement along z-axis})}}{8}{figure.5}}
+\newlabel{fig:hollow_cylinder}{{5}{8}{3-D plot of $\theta _0, \theta _1$ and $\theta _2$ is a hollow cylinder (\textit {Details: $2\pi +\theta _0$ = distance from z-axis, $2\pi +\theta _1$ = distance from x-y plane \& $\theta _2$ = angular displacement along z-axis})}{figure.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Future Work}{8}{section.4}}
 \bibstyle{apalike}
 \bibdata{report_ref}
 \bibcite{bica}{{1}{2015}{{Bhartiya and Mukerjee}}{{}}}
@@ -49,4 +58,6 @@
 \bibcite{deb}{{3}{2015}{{Dey}}{{}}}
 \bibcite{wiki_Baxter}{{4}{2015}{{Wikipedia}}{{}}}
 \citation{choset}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Acknowledgement}{7}{section.5}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces An external python script (which uses v-rep remote API) captures images from various peripheral cameras. Images with the same name belong to the same pose.}}{9}{figure.6}}
+\newlabel{Baxter}{{6}{9}{An external python script (which uses v-rep remote API) captures images from various peripheral cameras. Images with the same name belong to the same pose}{figure.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Acknowledgement}{10}{section.5}}

@@ -1,0 +1,15 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{3-D Articulated Arm}{section.1}% 2
+\BOOKMARK [1][-]{section.2}{Data Generation}{}% 3
+\BOOKMARK [2][-]{subsection.2.1}{Image Validation}{section.2}% 4
+\BOOKMARK [1][-]{section.3}{Idea/Approach}{}% 5
+\BOOKMARK [2][-]{subsection.3.1}{Graph Generation}{section.3}% 6
+\BOOKMARK [2][-]{subsection.3.2}{Roadmap Composition}{section.3}% 7
+\BOOKMARK [1][-]{section.4}{Current Progress}{}% 8
+\BOOKMARK [2][-]{subsection.4.1}{Choice of a 3-D modelling software}{section.4}% 9
+\BOOKMARK [2][-]{subsection.4.2}{Image generation for a robot with 3 dofs \(3 revolute joints\)}{section.4}% 10
+\BOOKMARK [3][-]{subsubsection.4.2.1}{Manifold}{subsection.4.2}% 11
+\BOOKMARK [3][-]{subsubsection.4.2.2}{Difficulties}{subsection.4.2}% 12
+\BOOKMARK [3][-]{subsubsection.4.2.3}{Proposed solutions}{subsection.4.2}% 13
+\BOOKMARK [1][-]{section.5}{Future Work}{}% 14
+\BOOKMARK [1][-]{section.6}{Acknowledgement}{}% 15
